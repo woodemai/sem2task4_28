@@ -520,7 +520,6 @@ public class JTableUtils {
     }
 
 
-
     public static double[][] readDoubleMatrixFromJTable(JTable table) {
         try {
             Double[][] matrix = readMatrixFromJTable(table, Double.class, JTableUtils::parseDouble, false, 0.0);
