@@ -56,7 +56,10 @@ public class Window extends JFrame {
             }
         });
         buttonExecute.addActionListener(e -> {
-
+            String[] sortData = JTableUtils.readStringMatrixFromJTable(tableDataArray)[0];
+            int[] sortOrder = JTableUtils.readIntArrayFromJTable(tableOrderArray);
+            Sort.sort(sortData, sortOrder);
+            JTableUtils.writeArrayToJTable(tableOutput, sortData);
         });
     }
 }

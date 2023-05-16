@@ -2,22 +2,21 @@ package ru.vsu.cs.sem2task4_27;
 
 public class Sort {
 
-    public static <T extends Comparable<? super T>> void sort(T[] sortData, int[] sortOrder) {
-        for (int i = 0; i < sortData.length - 1; ++i) {
-            int minIndex = i;
-            for (int j = i + 1; j < sortData.length; ++j) {
-                if (sortOrder[j] < sortOrder[minIndex]) {
-                    minIndex = j;
-                }
+    public static <T> void sort(T[] sortData, int[] sortOrder) {
+        if (sortData.length != sortOrder.length) return;
+        for (int i = 1; i < sortData.length; i++) {
+            int value = sortOrder[i];
+            int j;
+            for (j = i - 1; j >= 0 && sortOrder[j] > value; j--) {
+                int temp = sortOrder[j + 1];
+                sortOrder[j + 1] = sortOrder[j];
+                sortOrder[j] = temp;
+
+                T t = sortData[j + 1];
+                sortData[j + 1] = sortData[j];
+                sortData[j] = t;
             }
-            // обмен в массивы порядка
-            int temp = sortOrder[minIndex];
-            sortOrder[minIndex] = sortOrder[i];
-            sortOrder[i] = temp;
-            // обмен в массиве данных
-            T t = sortData[minIndex];
-            sortData[minIndex] = sortData[i];
-            sortData[i] = t;
+            sortOrder[j + 1] = value;
         }
     }
 }
