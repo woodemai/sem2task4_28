@@ -1,4 +1,4 @@
-package ru.vsu.cs.sem2task4_27.utils;
+package ru.vsu.cs.sem2task4_28.utils;
 
 import javax.swing.*;
 import javax.swing.plaf.FontUIResource;

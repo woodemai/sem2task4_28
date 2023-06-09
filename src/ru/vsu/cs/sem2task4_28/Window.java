@@ -1,8 +1,8 @@
-package ru.vsu.cs.sem2task4_27;
+package ru.vsu.cs.sem2task4_28;
 
-import ru.vsu.cs.sem2task4_27.utils.IOUtils;
-import ru.vsu.cs.sem2task4_27.utils.JTableUtils;
-import ru.vsu.cs.sem2task4_27.utils.SwingUtils;
+import ru.vsu.cs.sem2task4_28.utils.IOUtils;
+import ru.vsu.cs.sem2task4_28.utils.JTableUtils;
+import ru.vsu.cs.sem2task4_28.utils.SwingUtils;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
