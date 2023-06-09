@@ -11,9 +11,8 @@ import java.awt.*;
 import java.io.File;
 
 public class Window extends JFrame {
-    private JButton buttonInputDataArray;
-    private JButton buttonInputOrderArray;
-    private JTable tableDataArray;
+    private JButton buttonInput;
+    private JTable tableInput;
     private JButton buttonExecute;
     private JTable tableOutput;
     private JPanel panel;
@@ -32,54 +31,73 @@ public class Window extends JFrame {
         fileChooser.setCurrentDirectory(new File("."));
         FileFilter filter = new FileNameExtensionFilter("Text files", "txt");
         fileChooser.addChoosableFileFilter(filter);
-        JTableUtils.initJTableForArray(tableDataArray, 40, false, true, false, true);
+        JTableUtils.initJTableForArray(tableInput, 40, false, true, false, true);
         JTableUtils.initJTableForArray(tableOutput, 40, false, true, false, true);
-        buttonInputDataArray.addActionListener(e -> {
+        buttonInput.addActionListener(e -> {
+//            try {
+//                if (fileChooser.showOpenDialog(panel) == JFileChooser.APPROVE_OPTION) {
+//                    String[] array = IOUtils.getStringArrayFromFile(fileChooser.getSelectedFile().getPath());
+//                    String[][] tableArr = JTableUtils.readStringMatrixFromJTable(tableInput);
+//                    tableArr[0] = array;
+//                    JTableUtils.writeArrayToJTable(tableInput, tableArr);
+//                }
+//            } catch (Exception exception) {
+//                throw new RuntimeException(exception);
+//            }
             try {
                 if (fileChooser.showOpenDialog(panel) == JFileChooser.APPROVE_OPTION) {
-                    String[] array = IOUtils.getStringArrayFromFile(fileChooser.getSelectedFile().getPath());
-                    String[][] tableArr = JTableUtils.readStringMatrixFromJTable(tableDataArray);
-                    tableArr[0] = array;
-                    JTableUtils.writeArrayToJTable(tableDataArray, tableArr);
+                    String[][] array = IOUtils.getStringArrayFromFile(fileChooser.getSelectedFile().getPath());
+                    JTableUtils.writeArrayToJTable(tableInput, array);
                 }
+
             } catch (Exception exception) {
+                SwingUtils.showInfoMessageBox("Ошибка при загрузки данных", "Ошибка");
                 throw new RuntimeException(exception);
             }
         });
-        buttonInputOrderArray.addActionListener(e -> {
-            try {
-                if (fileChooser.showOpenDialog(panel) == JFileChooser.APPROVE_OPTION) {
-                    String[] array = IOUtils.getStringArrayFromFile(fileChooser.getSelectedFile().getPath());
-                    String[][] tableArr = new String[2][array.length];
-                    tableArr[0] = JTableUtils.readStringMatrixFromJTable(tableDataArray)[0];
-                    tableArr[1] = array;
-                    JTableUtils.writeArrayToJTable(tableDataArray, tableArr);
-                }
-            } catch (Exception exception) {
-                throw new RuntimeException(exception);
-            }
-        });
+//        buttonInputOrderArray.addActionListener(e -> {
+//            try {
+//                if (fileChooser.showOpenDialog(panel) == JFileChooser.APPROVE_OPTION) {
+//                    String[] array = IOUtils.getStringArrayFromFile(fileChooser.getSelectedFile().getPath());
+//                    String[][] tableArr = new String[2][array.length];
+//                    tableArr[0] = JTableUtils.readStringMatrixFromJTable(tableInput)[0];
+//                    tableArr[1] = array;
+//                    JTableUtils.writeArrayToJTable(tableInput, tableArr);
+//                }
+//            } catch (Exception exception) {
+//                throw new RuntimeException(exception);
+//            }
+//        });
         buttonExecute.addActionListener(e -> {
             try {
-                String[] sortData = JTableUtils.readStringMatrixFromJTable(tableDataArray)[0];
-                String[] sortOrderDefault = JTableUtils.readStringMatrixFromJTable(tableDataArray)[1];
-                if (sortData.length != sortOrderDefault.length) {
+                String[][] array = JTableUtils.readStringMatrixFromJTable(tableInput);
+                if (array.length != 2) {
                     throw new Exception();
                 } else {
-                    int[] sortOrder = new int[sortOrderDefault.length];
-                    for (int i = 0; i < sortOrderDefault.length; i++) {
-                        sortOrder[i] = Integer.parseInt(sortOrderDefault[i]);
-                        if ((sortData[i].length() == 0) ||
-                                (sortData[i].length() == 0 && sortOrderDefault[i].length() == 0)) {
-                            throw new Exception();
+                    int[] orderArray = new int[array[0].length];
+                    for (int i = 0; i < array[0].length; i++) {
+                        if ((array[0][i].equals(""))) {
+                            throw new Exception("empty");
+                        } else {
+                            orderArray[i] = Integer.parseInt(array[0][i]);
                         }
                     }
-                    Sort.sort(sortData, sortOrder);
-                    JTableUtils.writeArrayToJTable(tableOutput, sortData);
+                    Sort.sort(array[1], orderArray);
+                    for (int i = 0; i < array[0].length; i++) {
+                        array[0][i] = String.valueOf(orderArray[i]);
+                    }
                 }
+                JTableUtils.writeArrayToJTable(tableOutput, array);
+
             } catch (Exception exception) {
-                SwingUtils.showInfoMessageBox("Длина массива данных должны быть равна длине массива порядка!", "Ошибка");
+                if (exception.getMessage().equals("empty")) {
+                    SwingUtils.showInfoMessageBox("Не должно быть пустых ячеек!", "Ошибка");
+
+                } else {
+                    SwingUtils.showInfoMessageBox("Длина массива данных должны быть равна длине массива порядка!", "Ошибка");
+                }
             }
+
 
         });
     }
