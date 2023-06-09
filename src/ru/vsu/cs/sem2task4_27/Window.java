@@ -2,6 +2,7 @@ package ru.vsu.cs.sem2task4_27;
 
 import ru.vsu.cs.sem2task4_27.utils.IOUtils;
 import ru.vsu.cs.sem2task4_27.utils.JTableUtils;
+import ru.vsu.cs.sem2task4_27.utils.SwingUtils;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
@@ -59,14 +60,27 @@ public class Window extends JFrame {
             }
         });
         buttonExecute.addActionListener(e -> {
-            String[] sortData = JTableUtils.readStringMatrixFromJTable(tableDataArray)[0];
-            String[] sortOrderString = JTableUtils.readStringMatrixFromJTable(tableDataArray)[1];
-            int[] sortOrder = new int[sortOrderString.length];
-            for (int i = 0; i < sortOrderString.length; i++) {
-                sortOrder[i] = Integer.parseInt(sortOrderString[i]);
+            try {
+                String[] sortData = JTableUtils.readStringMatrixFromJTable(tableDataArray)[0];
+                String[] sortOrderDefault = JTableUtils.readStringMatrixFromJTable(tableDataArray)[1];
+                if (sortData.length != sortOrderDefault.length) {
+                    throw new Exception();
+                } else {
+                    int[] sortOrder = new int[sortOrderDefault.length];
+                    for (int i = 0; i < sortOrderDefault.length; i++) {
+                        sortOrder[i] = Integer.parseInt(sortOrderDefault[i]);
+                        if ((sortData[i].length() == 0) ||
+                                (sortData[i].length() == 0 && sortOrderDefault[i].length() == 0)) {
+                            throw new Exception();
+                        }
+                    }
+                    Sort.sort(sortData, sortOrder);
+                    JTableUtils.writeArrayToJTable(tableOutput, sortData);
+                }
+            } catch (Exception exception) {
+                SwingUtils.showInfoMessageBox("Длина массива данных должны быть равна длине массива порядка!", "Ошибка");
             }
-            Sort.sort(sortData, sortOrder);
-            JTableUtils.writeArrayToJTable(tableOutput, sortData);
+
         });
     }
 }
