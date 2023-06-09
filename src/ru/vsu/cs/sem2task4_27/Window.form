@@ -16,35 +16,14 @@
           <text value="Загрузить массив данных"/>
         </properties>
       </component>
-      <component id="b4f91" class="javax.swing.JButton" binding="buttonInputOrderArray">
-        <constraints>
-          <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-        </constraints>
-        <properties>
-          <text value="Загрузить массив порядка"/>
-        </properties>
-      </component>
       <scrollpane id="302a8">
         <constraints>
-          <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+          <grid row="1" column="0" row-span="1" col-span="2" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties/>
         <border type="none"/>
         <children>
           <component id="3a053" class="javax.swing.JTable" binding="tableDataArray">
-            <constraints/>
-            <properties/>
-          </component>
-        </children>
-      </scrollpane>
-      <scrollpane id="55a76">
-        <constraints>
-          <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
-        </constraints>
-        <properties/>
-        <border type="none"/>
-        <children>
-          <component id="d451" class="javax.swing.JTable" binding="tableOrderArray">
             <constraints/>
             <properties/>
           </component>
@@ -71,6 +50,14 @@
           </component>
         </children>
       </scrollpane>
+      <component id="b4f91" class="javax.swing.JButton" binding="buttonInputOrderArray">
+        <constraints>
+          <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="Загрузить массив порядка"/>
+        </properties>
+      </component>
     </children>
   </grid>
 </form>

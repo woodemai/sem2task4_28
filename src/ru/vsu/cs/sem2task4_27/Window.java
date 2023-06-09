@@ -13,7 +13,6 @@ public class Window extends JFrame {
     private JButton buttonInputDataArray;
     private JButton buttonInputOrderArray;
     private JTable tableDataArray;
-    private JTable tableOrderArray;
     private JButton buttonExecute;
     private JTable tableOutput;
     private JPanel panel;
@@ -33,13 +32,14 @@ public class Window extends JFrame {
         FileFilter filter = new FileNameExtensionFilter("Text files", "txt");
         fileChooser.addChoosableFileFilter(filter);
         JTableUtils.initJTableForArray(tableDataArray, 40, false, true, false, true);
-        JTableUtils.initJTableForArray(tableOrderArray, 40, false, true, false, true);
         JTableUtils.initJTableForArray(tableOutput, 40, false, true, false, true);
         buttonInputDataArray.addActionListener(e -> {
             try {
                 if (fileChooser.showOpenDialog(panel) == JFileChooser.APPROVE_OPTION) {
                     String[] array = IOUtils.getStringArrayFromFile(fileChooser.getSelectedFile().getPath());
-                    JTableUtils.writeArrayToJTable(tableDataArray, array);
+                    String[][] tableArr = JTableUtils.readStringMatrixFromJTable(tableDataArray);
+                    tableArr[0] = array;
+                    JTableUtils.writeArrayToJTable(tableDataArray, tableArr);
                 }
             } catch (Exception exception) {
                 throw new RuntimeException(exception);
@@ -48,8 +48,11 @@ public class Window extends JFrame {
         buttonInputOrderArray.addActionListener(e -> {
             try {
                 if (fileChooser.showOpenDialog(panel) == JFileChooser.APPROVE_OPTION) {
-                    int[] array = IOUtils.getIntArrayFromFile(fileChooser.getSelectedFile().getPath());
-                    JTableUtils.writeArrayToJTable(tableOrderArray, array);
+                    String[] array = IOUtils.getStringArrayFromFile(fileChooser.getSelectedFile().getPath());
+                    String[][] tableArr = new String[2][array.length];
+                    tableArr[0] = JTableUtils.readStringMatrixFromJTable(tableDataArray)[0];
+                    tableArr[1] = array;
+                    JTableUtils.writeArrayToJTable(tableDataArray, tableArr);
                 }
             } catch (Exception exception) {
                 throw new RuntimeException(exception);
@@ -57,7 +60,11 @@ public class Window extends JFrame {
         });
         buttonExecute.addActionListener(e -> {
             String[] sortData = JTableUtils.readStringMatrixFromJTable(tableDataArray)[0];
-            int[] sortOrder = JTableUtils.readIntArrayFromJTable(tableOrderArray);
+            String[] sortOrderString = JTableUtils.readStringMatrixFromJTable(tableDataArray)[1];
+            int[] sortOrder = new int[sortOrderString.length];
+            for (int i = 0; i < sortOrderString.length; i++) {
+                sortOrder[i] = Integer.parseInt(sortOrderString[i]);
+            }
             Sort.sort(sortData, sortOrder);
             JTableUtils.writeArrayToJTable(tableOutput, sortData);
         });
